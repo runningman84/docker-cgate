@@ -1,0 +1,14 @@
+[Unit]
+Description=cgate
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill cgate1
+ExecStartPre=-/usr/bin/docker rm cgate1
+ExecStartPre=/usr/bin/docker pull runningman84/cgate
+ExecStart=/usr/bin/docker run --name cgate1 runningman84/cgate
+
+[Install]
+WantedBy=multi-user.target
