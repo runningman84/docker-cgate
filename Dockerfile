@@ -1,20 +1,13 @@
 FROM ubuntu:trusty
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
-# system update
-RUN apt-get update -y
-RUN apt-get upgrade -y
-# tools
-RUN apt-get install alien wget -y
-# communigate
-RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-10.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-10.x86_64.rpm
-RUN alien -i /tmp/CGatePro-Linux-6.0-10.x86_64.rpm
-RUN rm /tmp/CGatePro-Linux-6.0-10.x86_64.rpm
-
-# Clean up APT when done.
-RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-#RUN useradd cgatepro -d /var/CommuniGate -s /usr/sbin/nologin -g mail -r 
+# add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN useradd cgatepro -d /var/CommuniGate -r -g mail && mkdir -p /var/CommuniGate && chown -R cgatepro.mail /var/CommuniGate
+ 
+# install alien
+RUN apt-get update -y && apt-get install alien wget -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+# install communigate
+RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-10.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && alien -i /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-10.x86_64.rpm
 
 # Define mountable directories.
 VOLUME ["/var/CommuniGate"]
