@@ -3,6 +3,9 @@ MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
 # add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN useradd cgatepro -d /var/CommuniGate -r -g mail && mkdir -p /var/CommuniGate && chown -R cgatepro.mail /var/CommuniGate
+
+# install wget
+RUN yum install wget
  
 # install communigate
 RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rpm -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
