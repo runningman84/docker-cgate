@@ -7,7 +7,7 @@ RUN useradd cgatepro -d /var/CommuniGate -r -g mail && mkdir -p /var/CommuniGate
 # install alien
 RUN apt-get update -y && apt-get install alien wget -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 # install communigate
-RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-10.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && alien -i /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-10.x86_64.rpm
+RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && alien -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
 
 # Define mountable directories.
 VOLUME ["/var/CommuniGate"]
