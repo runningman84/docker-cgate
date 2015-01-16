@@ -3,7 +3,7 @@ CommuniGate
 
 Introduction
 ----
-This docker image installs CommuniGate Pro using Ubuntu LTS 14.04
+This docker image installs CommuniGate Pro using CentOS 6.
 
 A documentation can be found here:
 https://www.communigate.com/communigatepro/
