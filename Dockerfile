@@ -1,13 +1,11 @@
-FROM ubuntu:trusty
+FROM centos:centos6
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
 # add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN useradd cgatepro -d /var/CommuniGate -r -g mail && mkdir -p /var/CommuniGate && chown -R cgatepro.mail /var/CommuniGate
  
-# install alien
-RUN apt-get update -y && apt-get install alien wget -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 # install communigate
-RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-10.x86_64.rpm && alien -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
+RUN wget ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rpm -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
 
 # Define mountable directories.
 VOLUME ["/var/CommuniGate"]
