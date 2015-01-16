@@ -8,7 +8,7 @@ RUN useradd cgatepro -d /var/CommuniGate -r -g mail && mkdir -p /var/CommuniGate
 RUN yum install -y wget
  
 # install communigate
-RUN wget --nv ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rpm -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
+RUN wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/6.0/CGatePro-Linux-6.0-11.x86_64.rpm -O /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rpm -i /tmp/CGatePro-Linux-6.0-11.x86_64.rpm && rm /tmp/CGatePro-Linux-6.0-11.x86_64.rpm
 
 # Define mountable directories.
 VOLUME ["/var/CommuniGate"]
