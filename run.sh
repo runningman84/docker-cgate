@@ -29,7 +29,7 @@ fi
 
 if [ -d ${BASEFOLDER} ] ; then
   # ...
-  chown -R root.mail ${BASEFOLDER}
+  chown -R cgatepro.mail ${BASEFOLDER}
   chmod -R g+rw ${BASEFOLDER}
 else
   echo "Creating the CommuniGate Base Folder..."
