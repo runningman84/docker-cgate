@@ -1,31 +1,35 @@
-FROM centos:centos6
+FROM alpine:latest
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
-# Set the debconf frontend to Noninteractive
-#RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-
 # install wget
-RUN yum install -y wget tar make gcc
+RUN apk add --update wget tar ca-certificates openssl
 
 # install dumb init
-RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.0.0/dumb-init_1.0.0_amd64 \
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.1.0/dumb-init_1.1.0_amd64 \
 -O /usr/local/bin/dumb-init \
 && chmod +x /usr/local/bin/dumb-init
 
 # add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN useradd cgatepro -d /var/CommuniGate -r -g mail \
+RUN adduser -S cgatepro -h /var/CommuniGate -G mail \
 && mkdir -p /var/CommuniGate \
+&& mkdir -p /opt/CommuniGate \
 && chown -R cgatepro.mail /var/CommuniGate
 
-# install communigate
-RUN wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux.x86_64.rpm \
--O /tmp/CGatePro-Linux.x86_64.rpm \
-&& rpm -i /tmp/CGatePro-Linux.x86_64.rpm \
-&& rm /tmp/CGatePro-Linux.x86_64.rpm
+# install communigate 32bit static
+RUN cd /tmp \
+&& wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux-Intel.tgz \
+-O /tmp/CGatePro-Linux-Intel.tgz \
+&& tar -xzf /tmp/CGatePro-Linux-Intel.tgz \
+&& mv /tmp/CGateProSoftware/CommuniGate /opt/ \
+&& rm -fr /tmp/CGateProSoftware/ \
+&& rm /tmp/CGatePro-Linux-Intel.tgz \
+&& rm /opt/CommuniGate/CGServer \
+&& rm /opt/CommuniGate/mail \
+&& rm /opt/CommuniGate/sendmail
 
 # install cgpav
 # http://program.farit.ru/antivir/cgpav-1.5.tar.gz
-ADD cgpav /opt/CommuniGate/cgpav
+ADD cgpav-32 /opt/CommuniGate/cgpav
 RUN chmod 755 /opt/CommuniGate/cgpav
 
 ADD cgpav.conf /etc/cgpav.conf

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 APPLICATION="/opt"
 BASEFOLDER="/var/CommuniGate"
@@ -16,7 +16,7 @@ echo " /opt/CommuniGate/cgpav -f /etc/cgpav.conf"
 echo "========================================================================"
 
 
-[ -f ${APPLICATION}/CommuniGate/CGServer ] || exit 1
+[ -f ${APPLICATION}/CommuniGate/CGServer-static ] || exit 1
 
 #ulimit -u 2000
 ulimit -c 2097151
@@ -42,4 +42,4 @@ fi
 
 echo "Starting CommuniGate Pro"
 
-exec ${APPLICATION}/CommuniGate/CGServer --Base ${BASEFOLDER} ${SUPPLPARAMS}
+exec ${APPLICATION}/CommuniGate/CGServer-static --Base ${BASEFOLDER} ${SUPPLPARAMS}
