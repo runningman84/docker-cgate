@@ -1,0 +1,36 @@
+{
+ AccountCacheSize = 100;
+ AccountCachedInfo = NO;
+ AccountStatistics = NO;
+ ChronosLogLevel = 3;
+ CrashRecovery = YES;
+ DataSetsLogLevel = 2;
+ DomainName = REPLACEME;
+ ExternalAUTH = {Enabled=NO;LogLevel=3;};
+ ExternalBalancer = {Enabled=NO;LogLevel=3;};
+ ExternalBanner = {Enabled=NO;LogLevel=3;};
+ ExternalCDR = {Enabled=NO;LogLevel=3;};
+ ExternalFilters = ({Enabled=YES;LogLevel=5;Name=cgpav;ProgramName="/opt/CommuniGate/cgpav -f /etc/cgpav.conf";RestartPause=15s;Timeout=5m;},{Enabled=YES;LogLevel=5;Name=DKIM_verify;ProgramName="/opt/CommuniGate/helper_DKIM_verify.pl";RestartPause=15s;Timeout=5m;},{Enabled=YES;LogLevel=5;Name=DKIM_sign;ProgramName="/opt/CommuniGate/helper_DKIM_sign.pl";RestartPause=15s;Timeout=5m;});
+ ExternalRADIUS = {Enabled=NO;LogLevel=3;};
+ HTTPOutputCacheSize = 10;
+ HTTPOutputLogLevel = 2;
+ HideAccountUnknown = YES;
+ LicenseAccepted = #T20-12-2010_08:05:11;
+ LogLevel = 3;
+ MBOXSizeToIndex = 30M;
+ NotifierLogLevel = 2;
+ NotifierQueueSize = 100;
+ NumLargeBuffers = 10;
+ SaveInfoUpdates = YES;
+ SeparateAdminRealms = NO;
+ TLSAbortOnWrongCert = YES;
+ TLSAcceptSSLv2Hello = YES;
+ TLSEnableCBCCiphers = YES;
+ TLSEnableWeak = YES;
+ TLSLogLevel = 1;
+ TLSMinVersion = 0;
+ TLSProcessDomainNames = YES;
+ TLSTimeToLive = 1m;
+ TempFilesLogLevel = 1;
+ TempFilesReuse = YES;
+}

@@ -1,0 +1,17 @@
+{
+ CopyErrorReports = NO;
+ DequeuerLogLevel = 2;
+ DequeuerProcessors = 1;
+ DequeuerReceipt = authenticated;
+ DequeuerReject = "headers by default";
+ DequeuerWaitTime = 15s;
+ EMailDeliveryLog = NO;
+ EnqueueAsync = authenticated;
+ EnqueuerLogLevel = 3;
+ EnqueuerProcessors = 3;
+ ErrorReportCopyAddress = postmaster;
+ HopLimit = 20;
+ QueueFoldering = "-1";
+ QueueLimit = "-1";
+ QueueLogLevel = 3;
+}

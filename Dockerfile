@@ -27,10 +27,31 @@ RUN cd /tmp \
 && rm /opt/CommuniGate/mail \
 && rm /opt/CommuniGate/sendmail
 
+# install perl dkim
+#RUN apk add --update perl make gcc perl-dev musl-dev openssl-dev \
+#&& wget -q https://cpanmin.us \
+#-O /bin/cpanm \
+#&& chmod +x /bin/cpanm \
+#&& cpanm install Mail::DKIM::Signer \
+#&& cpanm install Mail::DKIM::Verifier
+
+# install dkim helper
+RUN apk add --update perl-mail-dkim \
+&& wget -q https://www.communigate.com/ScriptRepository/helper_DKIM_verify.pl \
+-O /opt/CommuniGate/helper_DKIM_verify.pl \
+&& wget -q https://www.communigate.com/ScriptRepository/helper_DKIM_sign.pl \
+-O /opt/CommuniGate/helper_DKIM_sign.pl \
+&& chmod 755 /opt/CommuniGate/helper_DKIM_verify.pl \
+&& chmod 755 /opt/CommuniGate/helper_DKIM_sign.pl
+
 # install cgpav
 # http://program.farit.ru/antivir/cgpav-1.5.tar.gz
 ADD cgpav-32 /opt/CommuniGate/cgpav
 RUN chmod 755 /opt/CommuniGate/cgpav
+
+ADD Main.settings /opt/CommuniGate/SAMPLE/Main.settings
+ADD Rules.settings /opt/CommuniGate/SAMPLE/Rules.settings
+ADD Queue.settings /opt/CommuniGate/SAMPLE/Queue.settings
 
 ADD cgpav.conf /etc/cgpav.conf
 
@@ -52,10 +73,13 @@ EXPOSE 8100
 EXPOSE 9100
 # Server SMTP
 EXPOSE 25
+# Server PWD
+EXPOSE 106
 # User SMTP/IMAP/POP
 EXPOSE 110
 EXPOSE 143
 EXPOSE 587
 EXPOSE 993
 EXPOSE 995
+# User SIP
 EXPOSE 5060
