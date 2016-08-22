@@ -1,8 +1,8 @@
-FROM alpine:latest
+FROM frolvlad/alpine-glibc
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
 # install wget
-RUN apk add --update wget tar ca-certificates openssl
+RUN apk add --update wget tar ca-certificates openssl binutils
 
 # install dumb init
 RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.1.0/dumb-init_1.1.0_amd64 \
@@ -16,24 +16,24 @@ RUN adduser -S cgatepro -h /var/CommuniGate -G mail \
 && chown -R cgatepro.mail /var/CommuniGate
 
 # install communigate 32bit static
-RUN cd /tmp \
-&& wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux-Intel.tgz \
--O /tmp/CGatePro-Linux-Intel.tgz \
-&& tar -xzf /tmp/CGatePro-Linux-Intel.tgz \
-&& mv /tmp/CGateProSoftware/CommuniGate /opt/ \
-&& rm -fr /tmp/CGateProSoftware/ \
-&& rm /tmp/CGatePro-Linux-Intel.tgz \
-&& rm /opt/CommuniGate/CGServer \
-&& rm /opt/CommuniGate/mail \
-&& rm /opt/CommuniGate/sendmail
+#RUN cd /tmp \
+#&& wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux-Intel.tgz \
+#-O /tmp/CGatePro-Linux-Intel.tgz \
+#&& tar -xzf /tmp/CGatePro-Linux-Intel.tgz \
+#&& mv /tmp/CGateProSoftware/CommuniGate /opt/ \
+#&& rm -fr /tmp/CGateProSoftware/ \
+#&& rm /tmp/CGatePro-Linux-Intel.tgz \
+#&& rm /opt/CommuniGate/CGServer \
+#&& rm /opt/CommuniGate/mail \
+#&& rm /opt/CommuniGate/sendmail
 
-# install perl dkim
-#RUN apk add --update perl make gcc perl-dev musl-dev openssl-dev \
-#&& wget -q https://cpanmin.us \
-#-O /bin/cpanm \
-#&& chmod +x /bin/cpanm \
-#&& cpanm install Mail::DKIM::Signer \
-#&& cpanm install Mail::DKIM::Verifier
+RUN cd /tmp \
+&& wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux_amd64.deb \
+-O /tmp/CGatePro-Linux_amd64.deb \
+&& ar x /tmp/CGatePro-Linux_amd64.deb \
+&& tar -xzf /tmp/data.tar.gz \
+&& mv /tmp/opt/CommuniGate/* /opt/CommuniGate \
+&& rm -fr /tmp/*
 
 # install dkim helper
 RUN apk add --update perl-mail-dkim \
@@ -46,7 +46,7 @@ RUN apk add --update perl-mail-dkim \
 
 # install cgpav
 # http://program.farit.ru/antivir/cgpav-1.5.tar.gz
-ADD cgpav-32 /opt/CommuniGate/cgpav
+ADD cgpav-64 /opt/CommuniGate/cgpav
 RUN chmod 755 /opt/CommuniGate/cgpav
 
 ADD Main.settings /opt/CommuniGate/SAMPLE/Main.settings

@@ -21,7 +21,7 @@ echo " Helpers for cgpav and DKIM are preconfigured"
 echo "========================================================================"
 
 
-[ -f ${APPLICATION}/CommuniGate/CGServer-static ] || exit 1
+[ -f ${APPLICATION}/CommuniGate/CGServer ] || exit 1
 
 #ulimit -u 2000
 ulimit -c 2097151
@@ -83,7 +83,9 @@ if [ -f /opt/CommuniGate/helper_DKIM_sign.pl ]; then
   #my $nThreads=5;
   sed "s/Threads.*=.*/Threads = $HELPER_THREADS;/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
   sed "s/domain1.dom/$MAILSERVER_DOMAIN/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
+  sed "s/domain2.dom/$MAILSERVER_HOSTNAME/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
   sed "s/domain1.key/\/var\/CommuniGate\/DKIM\/dkim.key/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
+  sed "s/domain2.key/\/var\/CommuniGate\/DKIM\/dkim.key/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
 fi
 
 if [ -f /opt/CommuniGate/helper_DKIM_verify.pl ]; then
@@ -106,4 +108,4 @@ fi
 
 echo "Starting CommuniGate Pro"
 
-exec ${APPLICATION}/CommuniGate/CGServer-static --Base ${BASEFOLDER} ${SUPPLPARAMS}
+exec ${APPLICATION}/CommuniGate/CGServer --Base ${BASEFOLDER} ${SUPPLPARAMS}
