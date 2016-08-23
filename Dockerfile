@@ -1,6 +1,14 @@
 FROM frolvlad/alpine-glibc
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.docker.dockerfile="/Dockerfile" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/runningman84/docker-cgate"
+
 # install wget
 RUN apk add --update wget tar ca-certificates openssl binutils
 
