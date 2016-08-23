@@ -65,21 +65,24 @@ VOLUME ["/var/CommuniGate"]
 CMD ["dumb-init", "/run.sh"]
 
 # Expose ports.
-# Webadmin http/https
-EXPOSE 8010
-EXPOSE 9010
-# Webmail http/https
-EXPOSE 8100
-EXPOSE 9100
-# Server SMTP
-EXPOSE 25
-# Server PWD
-EXPOSE 106
-# User SMTP/IMAP/POP
-EXPOSE 110
-EXPOSE 143
-EXPOSE 587
-EXPOSE 993
-EXPOSE 995
-# User SIP
-EXPOSE 5060
+#cgate_1         | 19:54:55.527 2 HTTPU [0.0.0.0]:8100 listener ready for connections
+#cgate_1         | 19:54:55.527 2 HTTPA [0.0.0.0]:8010 listener ready for connections
+#cgate_1         | 19:54:55.527 2 HTTPA [0.0.0.0]:9010 listener ready for connections
+#cgate_1         | 19:54:55.528 2 HTTPU [0.0.0.0]:9100 listener ready for connections
+#cgate_1         | 19:54:55.528 2 PWD [0.0.0.0]:106 listener ready for connections
+#cgate_1         | 19:54:55.528 2 STUN [0.0.0.0]:3478 listener ready for connections
+#cgate_1         | 19:54:55.528 2 STUN [0.0.0.0]:5349 listener ready for connections
+#cgate_1         | 19:54:55.528 2 POP [0.0.0.0]:110 listener ready for connections
+#cgate_1         | 19:54:55.528 2 ACAP [0.0.0.0]:674 listener ready for connections
+#cgate_1         | 19:54:55.528 2 LDAP [0.0.0.0]:636 listener ready for connections
+#cgate_1         | 19:54:55.528 2 LDAP [0.0.0.0]:389 listener ready for connections
+#cgate_1         | 19:54:55.528 2 IMAP [0.0.0.0]:143 listener ready for connections
+#cgate_1         | 19:54:55.528 2 IMAP [0.0.0.0]:993 listener ready for connections
+#cgate_1         | 19:54:55.528 2 FTP [0.0.0.0]:8021 listener ready for connections
+#cgate_1         | 19:54:55.528 2 SMTP [0.0.0.0]:25 listener ready for connections
+#cgate_1         | 19:54:55.528 2 SIP [0.0.0.0]:5060 listener ready for connections
+#cgate_1         | 19:54:55.528 2 SIP [0.0.0.0]:5061 listener ready for connections
+#cgate_1         | 19:54:55.528 2 XMPP [0.0.0.0]:5222 listener ready for connections
+#cgate_1         | 19:54:55.528 2 XMPP [0.0.0.0]:5269 listener ready for connections
+#cgate_1         | 19:54:55.528 2 XIMSS [0.0.0.0]:11024 listener ready for connections
+EXPOSE 8100 8010 9010 9100 106 3478 5349 110 674 636 143 993 8021 25 5060/udp 5061/udp 5222 5269 11024

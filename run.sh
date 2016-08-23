@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-APPLICATION="/opt"
+APPLICATION="/opt/CommuniGate"
 BASEFOLDER="/var/CommuniGate"
 SUPPLPARAMS="--dropRoot --logToConsole"
 
@@ -16,12 +16,18 @@ echo "========================================================================"
 echo "      Application folder:  $APPLICATION"
 echo "      Data folder:         $BASEFOLDER"
 echo "      Startup parameters:  $SUPPLPARAMS"
+echo "      Mailserver Hostname: $MAILSERVER_HOSTNAME"
+echo "      Mailserver Domain:   $MAILSERVER_DOMAIN"
+echo "      Spamassassin Host:   $SPAMASSASIN_HOST"
+echo "      Spamassassin Port:   $SPAMASSASIN_PORT"
+echo "      Helper Threads:      $HELPER_THREADS"
+echo "      DKIM keys folders:   $BASEFOLDER/DKIM"
 echo ""
-echo " Helpers for cgpav and DKIM are preconfigured"
+echo " Helpers and rules for cgpav and DKIM are preconfigured"
 echo "========================================================================"
 
 
-[ -f ${APPLICATION}/CommuniGate/CGServer ] || exit 1
+[ -f ${APPLICATION}/CGServer ] || exit 1
 
 #ulimit -u 2000
 ulimit -c 2097151
@@ -46,22 +52,20 @@ fi
 if [ ! -d ${BASEFOLDER}/Settings ] ; then
   echo "Creating CommuniGate configuration from SAMPLE..."
   mkdir ${BASEFOLDER}/Settings
-  cp ${APPLICATION}/CommuniGate/SAMPLE/Main.settings ${BASEFOLDER}/Settings
-  cp ${APPLICATION}/CommuniGate/SAMPLE/Rules.settings ${BASEFOLDER}/Settings
-  cp ${APPLICATION}/CommuniGate/SAMPLE/Queue.settings ${BASEFOLDER}/Settings
+  cp ${APPLICATION}/SAMPLE/Main.settings ${BASEFOLDER}/Settings
+  cp ${APPLICATION}/SAMPLE/Rules.settings ${BASEFOLDER}/Settings
+  cp ${APPLICATION}/SAMPLE/Queue.settings ${BASEFOLDER}/Settings
   chown -R cgatepro.mail ${BASEFOLDER}/Settings
   chmod 2770 ${BASEFOLDER}/Settings
 fi
 
 if [ -f ${BASEFOLDER}/Settings/Main.settings ]; then
   echo "Applying CommuniGate main configuration from ENVIRONMENT..."
-  echo "DomainName: $MAILSERVER_HOSTNAME"
   sed "s/DomainName =.*/DomainName = $MAILSERVER_HOSTNAME;/g" -i ${BASEFOLDER}/Settings/Main.settings
 fi
 
 if [ -f ${BASEFOLDER}/Settings/Queue.settings ]; then
   echo "Applying CommuniGate queue configuration from ENVIRONMENT..."
-  echo "EnqueuerProcessors: $HELPER_THREADS"
   sed "s/EnqueuerProcessors =.*/EnqueuerProcessors = $HELPER_THREADS;/g" -i ${BASEFOLDER}/Settings/Main.settings
 fi
 
@@ -76,11 +80,11 @@ fi
 echo "Found DKIM public key:"
 cat ${BASEFOLDER}/DKIM/dkim.public
 
-if [ -f /opt/CommuniGate/helper_DKIM_sign.pl ]; then
+echo "Please create a DNS record in the following format with your key in p="
+echo "mail._domainkey.$MAILSERVER_DOMAIN. IN TXT \"v=DKIM1; g=*; k=rsa; p=...\""
+
+if [ -f ${APPLICATION}/helper_DKIM_sign.pl ]; then
   echo "Applying DKIM sign configuration from ENVIRONMENT..."
-  echo "MaxThreads: $HELPER_THREADS"
-  #echo "DomainName: $MAILSERVER_HOSTNAME"
-  #my $nThreads=5;
   sed "s/Threads.*=.*/Threads = $HELPER_THREADS;/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
   sed "s/domain1.dom/$MAILSERVER_DOMAIN/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
   sed "s/domain2.dom/$MAILSERVER_HOSTNAME/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
@@ -88,24 +92,20 @@ if [ -f /opt/CommuniGate/helper_DKIM_sign.pl ]; then
   sed "s/domain2.key/\/var\/CommuniGate\/DKIM\/dkim.key/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
 fi
 
-if [ -f /opt/CommuniGate/helper_DKIM_verify.pl ]; then
+if [ -f ${APPLICATION}/helper_DKIM_verify.pl ]; then
   echo "Applying DKIM verify configuration from ENVIRONMENT..."
-  echo "MaxThreads: $HELPER_THREADS"
-  #echo "DomainName: $MAILSERVER_HOSTNAME"
-  #my $nThreads=5;
   sed "s/Threads.*=.*/Threads = $HELPER_THREADS;/g" -i /opt/CommuniGate/helper_DKIM_verify.pl
 fi
 
 if [ -f /etc/cgpav.conf ]; then
   echo "Creating CGPAV configuration from ENVIRONMENT..."
-  echo "max childs: $HELPER_THREADS"
-  echo "spamassassin_host: $SPAMASSASIN_HOST"
-  echo "spamassassin_port: $SPAMASSASIN_PORT"
   sed "s/max_childs =.*/max_childs = $HELPER_THREADS/g" -i /etc/cgpav.conf
   sed "s/spamassassin_host =.*/spamassassin_host = $SPAMASSASIN_HOST/g" -i /etc/cgpav.conf
   sed "s/spamassassin_port =.*/spamassassin_port = $SPAMASSASIN_PORT/g" -i /etc/cgpav.conf
 fi
 
+echo ""
+
 echo "Starting CommuniGate Pro"
 
-exec ${APPLICATION}/CommuniGate/CGServer --Base ${BASEFOLDER} ${SUPPLPARAMS}
+exec ${APPLICATION}/CGServer --Base ${BASEFOLDER} ${SUPPLPARAMS}
