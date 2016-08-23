@@ -27,7 +27,7 @@ Running
 ```sh
 docker run -d -P -p 8010:8010 -p 8100:8100 -p 25:25 -p 110:110 -p 143:143 runningman84/cgate
 ```
-CommuniGate provides a lot of servies the corresponding ports can be seen in this output
+CommuniGate provides a lot of servies the corresponding ports can be seen in this output:
 ```
 cgate_1         | 19:54:55.527 2 HTTPU [0.0.0.0]:8100 listener ready for connections
 cgate_1         | 19:54:55.527 2 HTTPA [0.0.0.0]:8010 listener ready for connections
@@ -50,43 +50,16 @@ cgate_1         | 19:54:55.528 2 XMPP [0.0.0.0]:5222 listener ready for connecti
 cgate_1         | 19:54:55.528 2 XMPP [0.0.0.0]:5269 listener ready for connections
 cgate_1         | 19:54:55.528 2 XIMSS [0.0.0.0]:11024 listener ready for connections
 ```
+
 The container can be configured using these ENVIRONMENT variables:
 
-
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>MAILSERVER_DOMAIN</tt></td>
-    <td>The primary domain of the mailserver</td>
-    <td><tt>example.org</tt></td>
-  </tr>
-  <tr>
-    <td><tt>MAILSERVER_HOSTNAME</tt></td>
-    <td>The hostname of the mailserver</td>
-    <td><tt>mail.example.org</tt></td>
-  </tr>
-  <tr>
-    <td><tt>HELPER_THREADS</tt></td>
-    <td>The number of helper threads for cgpav and DKIM</td>
-    <td><tt>3</tt></td>
-  </tr>
-  <tr>
-    <td><tt>SPAMASSASIN_HOST</tt></td>
-    <td>The hostname of the spamd service</td>
-    <td><tt>localhost</tt></td>
-  </tr>
-  <tr>
-    <td><tt>SPAMASSASIN_PORT</tt></td>
-    <td>The port of the spamd service</td>
-    <td><tt>783</tt></td>
-  </tr>    
-</table>
-
-The corresponding settings are configured prior the CommuniGatePro Startup.
+Key | Description | Default
+------------ | ------------- | -------------
+MAILSERVER_DOMAIN | The primary domain of the mailserver | example.org
+MAILSERVER_HOSTNAME | The hostname of the mailserver | mail.example.org
+HELPER_THREADS | The number of helper threads for cgpav and DKIM | 3
+SPAMASSASIN_HOST | The hostname of the spamd service | localhost
+SPAMASSASIN_PORT | The port of the spamd service | 783
 
 Finally
 ----
