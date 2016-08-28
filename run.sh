@@ -8,8 +8,10 @@ SUPPLPARAMS="--dropRoot --logToConsole"
 if [ -z ${MAILSERVER_DOMAIN+x} ]; then MAILSERVER_DOMAIN=example.org; fi
 if [ -z ${MAILSERVER_HOSTNAME+x} ]; then MAILSERVER_HOSTNAME=mail.example.org; fi
 if [ -z ${HELPER_THREADS+x} ]; then HELPER_THREADS=3; fi
-if [ -z ${SPAMASSASIN_HOST+x} ]; then SPAMASSASIN_HOST=localhost; fi
-if [ -z ${SPAMASSASIN_PORT+x} ]; then SPAMASSASIN_PORT=783; fi
+if [ -z ${CGPAV_SPAMASSASIN_HOST+x} ]; then CGPAV_SPAMASSASIN_HOST=localhost; fi
+if [ -z ${CGPAV_SPAMASSASIN_PORT+x} ]; then CGPAV_SPAMASSASIN_PORT=783; fi
+if [ -z ${CGPAV_VIRUS_ACTION+x} ]; then CGPAV_VIRUS_ACTION=none; fi
+if [ -z ${CGPAV_SPAM_ACTION+x} ]; then CGPAV_SPAM_ACTION=addheaderjunk; fi
 
 echo "=> Using the following CommuniGatePro configuration:"
 echo "========================================================================"
@@ -18,8 +20,10 @@ echo "      Data folder:         $BASEFOLDER"
 echo "      Startup parameters:  $SUPPLPARAMS"
 echo "      Mailserver Hostname: $MAILSERVER_HOSTNAME"
 echo "      Mailserver Domain:   $MAILSERVER_DOMAIN"
-echo "      Spamassassin Host:   $SPAMASSASIN_HOST"
-echo "      Spamassassin Port:   $SPAMASSASIN_PORT"
+echo "      CGPAV spamd Host:    $CGPAV_SPAMASSASIN_HOST"
+echo "      CGPAV spamd Port:    $CGPAV_SPAMASSASIN_PORT"
+echo "      CGPAV virtus action: $CGPAV_VIRUS_ACTION"
+echo "      CGPAV spam action:   $CGPAV_SPAM_ACTION"
 echo "      Helper Threads:      $HELPER_THREADS"
 echo "      DKIM keys folders:   $BASEFOLDER/DKIM"
 echo ""
@@ -100,8 +104,10 @@ fi
 if [ -f /etc/cgpav.conf ]; then
   echo "Creating CGPAV configuration from ENVIRONMENT..."
   sed "s/max_childs =.*/max_childs = $HELPER_THREADS/g" -i /etc/cgpav.conf
-  sed "s/spamassassin_host =.*/spamassassin_host = $SPAMASSASIN_HOST/g" -i /etc/cgpav.conf
-  sed "s/spamassassin_port =.*/spamassassin_port = $SPAMASSASIN_PORT/g" -i /etc/cgpav.conf
+  sed "s/spamassassin_host =.*/spamassassin_host = $CGPAV_SPAMASSASIN_HOST/g" -i /etc/cgpav.conf
+  sed "s/spamassassin_port =.*/spamassassin_port = $CGPAV_SPAMASSASIN_PORT/g" -i /etc/cgpav.conf
+  sed "s/infected_action =.*/infected_action = $CGPAV_VIRUS_ACTION/g" -i /etc/cgpav.conf
+  sed "s/spam_action =.*/spam_action = $CGPAV_SPAM_ACTION/g" -i /etc/cgpav.conf
 fi
 
 echo ""
