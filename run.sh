@@ -10,8 +10,10 @@ if [ -z ${MAILSERVER_HOSTNAME+x} ]; then MAILSERVER_HOSTNAME=mail.example.org; f
 if [ -z ${HELPER_THREADS+x} ]; then HELPER_THREADS=3; fi
 if [ -z ${CGPAV_SPAMASSASIN_HOST+x} ]; then CGPAV_SPAMASSASIN_HOST=localhost; fi
 if [ -z ${CGPAV_SPAMASSASIN_PORT+x} ]; then CGPAV_SPAMASSASIN_PORT=783; fi
-if [ -z ${CGPAV_VIRUS_ACTION+x} ]; then CGPAV_VIRUS_ACTION=none; fi
 if [ -z ${CGPAV_SPAM_ACTION+x} ]; then CGPAV_SPAM_ACTION=addheaderjunk; fi
+if [ -z ${CGPAV_EXTRA_SPAM_ACTION+x} ]; then CGPAV_EXTRA_SPAM_ACTION=reject; fi
+if [ -z ${CGPAV_EXTRA_SPAM_SCORE+x} ]; then CGPAV_EXTRA_SPAM_SCORE=10; fi
+if [ -z ${CGPAV_VIRUS_ACTION+x} ]; then CGPAV_VIRUS_ACTION=none; fi
 
 echo "=> Using the following CommuniGatePro configuration:"
 echo "========================================================================"
@@ -22,8 +24,8 @@ echo "      Mailserver Hostname: $MAILSERVER_HOSTNAME"
 echo "      Mailserver Domain:   $MAILSERVER_DOMAIN"
 echo "      CGPAV spamd Host:    $CGPAV_SPAMASSASIN_HOST"
 echo "      CGPAV spamd Port:    $CGPAV_SPAMASSASIN_PORT"
-echo "      CGPAV virtus action: $CGPAV_VIRUS_ACTION"
-echo "      CGPAV spam action:   $CGPAV_SPAM_ACTION"
+echo "      CGPAV spam action:   $CGPAV_SPAM_ACTION ($CGPAV_EXTRA_SPAM_ACTION)"
+echo "      CGPAV virus action:  $CGPAV_VIRUS_ACTION"
 echo "      Helper Threads:      $HELPER_THREADS"
 echo "      DKIM keys folders:   $BASEFOLDER/DKIM"
 echo ""
@@ -108,6 +110,8 @@ if [ -f /etc/cgpav.conf ]; then
   sed "s/spamassassin_port =.*/spamassassin_port = $CGPAV_SPAMASSASIN_PORT/g" -i /etc/cgpav.conf
   sed "s/infected_action =.*/infected_action = $CGPAV_VIRUS_ACTION/g" -i /etc/cgpav.conf
   sed "s/spam_action =.*/spam_action = $CGPAV_SPAM_ACTION/g" -i /etc/cgpav.conf
+  sed "s/extra_spam_score =.*/extra_spam_score = $CGPAV_EXTRA_SPAM_SCORE/g" -i /etc/cgpav.conf
+  sed "s/extra_spam_action =.*/extra_spam_action = $CGPAV_EXTRA_SPAM_ACTION/g" -i /etc/cgpav.conf
 fi
 
 echo ""
