@@ -10,7 +10,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/runningman84/docker-cgate"
 
 # install wget
-RUN apk add --update wget tar ca-certificates openssl binutils
+RUN apk add --update wget tar ca-certificates openssl binutils curl
 
 # install dumb init
 RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.1.0/dumb-init_1.1.0_amd64 \
@@ -94,3 +94,5 @@ CMD ["dumb-init", "/run.sh"]
 #cgate_1         | 19:54:55.528 2 XMPP [0.0.0.0]:5269 listener ready for connections
 #cgate_1         | 19:54:55.528 2 XIMSS [0.0.0.0]:11024 listener ready for connections
 EXPOSE 8100 8010 9010 9100 106 3478 5349 110 674 636 143 993 8021 25 5060/udp 5061/udp 5222 5269 11024
+
+HEALTHCHECK --interval=5m --timeout=3s CMD curl -I -s -f http://localhost:8100/ || exit 1
