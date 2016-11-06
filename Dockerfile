@@ -9,6 +9,16 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/runningman84/docker-cgate"
 
+ENV MAILSERVER_DOMAIN=example.org \
+    MAILSERVER_HOSTNAME=mail.example.org \
+    HELPER_THREADS=3 \
+    CGPAV_SPAMASSASIN_HOST=localhost \
+    CGPAV_SPAMASSASIN_PORT=783 \
+    CGPAV_SPAM_ACTION=addheaderjunk \
+    CGPAV_EXTRA_SPAM_ACTION=reject \
+    CGPAV_EXTRA_SPAM_SCORE=10 \
+    CGPAV_VIRUS_ACTION=none
+
 # install wget
 RUN apk add --update wget tar ca-certificates openssl binutils curl
 
