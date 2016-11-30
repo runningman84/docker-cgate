@@ -23,7 +23,7 @@ ENV MAILSERVER_DOMAIN=example.org \
 RUN apk add --update wget tar ca-certificates openssl binutils curl
 
 # install dumb init
-RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.1.0/dumb-init_1.1.0_amd64 \
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 \
 -O /usr/local/bin/dumb-init \
 && chmod +x /usr/local/bin/dumb-init
 
