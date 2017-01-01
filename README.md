@@ -11,7 +11,7 @@ Introduction
 This docker image installs CommuniGate Pro using Alpine Linux.
 
 A documentation can be found here:
-https://www.communigate.com/communigatepro/
+[https://www.communigate.com/communigatepro/](https://www.communigate.com/communigatepro/)
 
 
 Install
