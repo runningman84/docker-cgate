@@ -7,7 +7,7 @@ SUPPLPARAMS="--dropRoot --logToConsole"
 
 if [ -z ${MAILSERVER_DOMAIN+x} ]; then MAILSERVER_DOMAIN=example.org; fi
 if [ -z ${MAILSERVER_HOSTNAME+x} ]; then MAILSERVER_HOSTNAME=mail.example.org; fi
-if [ -z ${HELPER_THREADS+x} ]; then HELPER_THREADS=3; fi
+if [ -z ${HELPER_THREADS+x} ]; then HELPER_THREADS=1; fi
 if [ -z ${CGPAV_SPAMASSASIN_HOST+x} ]; then CGPAV_SPAMASSASIN_HOST=localhost; fi
 if [ -z ${CGPAV_SPAMASSASIN_PORT+x} ]; then CGPAV_SPAMASSASIN_PORT=783; fi
 if [ -z ${CGPAV_SPAM_ACTION+x} ]; then CGPAV_SPAM_ACTION=addheaderjunk; fi
@@ -27,9 +27,8 @@ echo "      CGPAV spamd Port:    $CGPAV_SPAMASSASIN_PORT"
 echo "      CGPAV spam action:   $CGPAV_SPAM_ACTION ($CGPAV_EXTRA_SPAM_ACTION)"
 echo "      CGPAV virus action:  $CGPAV_VIRUS_ACTION"
 echo "      Helper Threads:      $HELPER_THREADS"
-echo "      DKIM keys folders:   $BASEFOLDER/DKIM"
 echo ""
-echo " Helpers and rules for cgpav and DKIM are preconfigured"
+echo " Helpers and rules for cgpav are preconfigured"
 echo "========================================================================"
 
 
@@ -73,34 +72,6 @@ fi
 if [ -f ${BASEFOLDER}/Settings/Queue.settings ]; then
   echo "Applying CommuniGate queue configuration from ENVIRONMENT..."
   sed "s/EnqueuerProcessors =.*/EnqueuerProcessors = $HELPER_THREADS;/g" -i ${BASEFOLDER}/Settings/Main.settings
-fi
-
-if [ ! -d ${BASEFOLDER}/DKIM ] ; then
-  echo "Creating DKIM public and private keys..."
-  mkdir ${BASEFOLDER}/DKIM
-  openssl genrsa -out ${BASEFOLDER}/DKIM/dkim.key 1024
-  openssl rsa -in ${BASEFOLDER}/DKIM/dkim.key -out ${BASEFOLDER}/DKIM/dkim.public -pubout -outform PEM
-  chown -R cgatepro.mail ${BASEFOLDER}/DKIM
-fi
-
-echo "Found DKIM public key:"
-cat ${BASEFOLDER}/DKIM/dkim.public
-
-echo "Please create a DNS record in the following format with your key in p="
-echo "mail._domainkey.$MAILSERVER_DOMAIN. IN TXT \"v=DKIM1; g=*; k=rsa; p=...\""
-
-if [ -f ${APPLICATION}/helper_DKIM_sign.pl ]; then
-  echo "Applying DKIM sign configuration from ENVIRONMENT..."
-  sed "s/Threads.*=.*/Threads = $HELPER_THREADS;/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
-  sed "s/domain1.dom/$MAILSERVER_DOMAIN/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
-  sed "s/domain2.dom/$MAILSERVER_HOSTNAME/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
-  sed "s/domain1.key/\/var\/CommuniGate\/DKIM\/dkim.key/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
-  sed "s/domain2.key/\/var\/CommuniGate\/DKIM\/dkim.key/g" -i /opt/CommuniGate/helper_DKIM_sign.pl
-fi
-
-if [ -f ${APPLICATION}/helper_DKIM_verify.pl ]; then
-  echo "Applying DKIM verify configuration from ENVIRONMENT..."
-  sed "s/Threads.*=.*/Threads = $HELPER_THREADS;/g" -i /opt/CommuniGate/helper_DKIM_verify.pl
 fi
 
 if [ -f /etc/cgpav.conf ]; then

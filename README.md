@@ -8,7 +8,7 @@ CommuniGate
 
 Introduction
 ----
-This docker image installs CommuniGate Pro using Alpine Linux.
+This docker image installs CommuniGate Pro using Ubuntu 18.04 base image.
 
 A documentation can be found here:
 [https://www.communigate.com/communigatepro/](https://www.communigate.com/communigatepro/)
@@ -57,13 +57,13 @@ Key | Description | Default
 ------------ | ------------- | -------------
 MAILSERVER_DOMAIN | The primary domain of the mailserver | example.org
 MAILSERVER_HOSTNAME | The hostname of the mailserver | mail.example.org
-HELPER_THREADS | The number of helper threads for cgpav and DKIM | 3
+HELPER_THREADS | The number of helper threads for cgpav | 1
 CGPAV_SPAMASSASIN_HOST | The hostname of the spamd service | localhost
 CGPAV_SPAMASSASIN_PORT | The port of the spamd service | 783
 CGPAV_VIRUS_ACTION | How to handle infected mails | none (virus scanning disabled)
 CGPAV_SPAM_ACTION | How to handle spam mails | addheaderjunk
 
-CGPAV and DKIM filters are preconfigured. The CGPAV filter scans using spamassassin and the DKIM filter signs and verifes messages.
+CGPAV filter is preconfigured. The CGPAV filter scans using spamassassin.
 
 Finally
 ----

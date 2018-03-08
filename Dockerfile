@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-glibc
+FROM ubuntu:18.04
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
 ARG BUILD_DATE
@@ -19,18 +19,18 @@ ENV MAILSERVER_DOMAIN=example.org \
     CGPAV_EXTRA_SPAM_SCORE=10 \
     CGPAV_VIRUS_ACTION=none
 
-# install wget
-RUN apk add --update wget tar ca-certificates openssl binutils curl
+# Install wget
+RUN apt-get update && \
+  apt-get -y install wget curl && \
+  rm -rf /var/lib/apt/lists/*
 
 # install dumb init
-RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 \
--O /usr/local/bin/dumb-init \
-&& chmod +x /usr/local/bin/dumb-init
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb && \
+  dpkg -i dumb-init_*.deb && rm dumb-init_*.deb
 
 # add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN adduser -S cgatepro -h /var/CommuniGate -G mail \
+RUN useradd -r cgatepro -d /var/CommuniGate -g mail \
 && mkdir -p /var/CommuniGate \
-&& mkdir -p /opt/CommuniGate \
 && chown -R cgatepro.mail /var/CommuniGate
 
 # install communigate 32bit static
@@ -48,19 +48,8 @@ RUN adduser -S cgatepro -h /var/CommuniGate -G mail \
 RUN cd /tmp \
 && wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux_amd64.deb \
 -O /tmp/CGatePro-Linux_amd64.deb \
-&& ar x /tmp/CGatePro-Linux_amd64.deb \
-&& tar -xzf /tmp/data.tar.gz \
-&& mv /tmp/opt/CommuniGate/* /opt/CommuniGate \
+&& dpkg -i /tmp/CGatePro-Linux_amd64.deb \
 && rm -fr /tmp/*
-
-# install dkim helper
-RUN apk add --update perl-mail-dkim \
-&& wget -q https://www.communigate.com/ScriptRepository/helper_DKIM_verify.pl \
--O /opt/CommuniGate/helper_DKIM_verify.pl \
-&& wget -q https://www.communigate.com/ScriptRepository/helper_DKIM_sign.pl \
--O /opt/CommuniGate/helper_DKIM_sign.pl \
-&& chmod 755 /opt/CommuniGate/helper_DKIM_verify.pl \
-&& chmod 755 /opt/CommuniGate/helper_DKIM_sign.pl
 
 # install cgpav
 # http://program.farit.ru/antivir/cgpav-1.5.tar.gz

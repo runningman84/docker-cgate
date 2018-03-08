@@ -10,7 +10,7 @@
  ExternalBalancer = {Enabled=NO;LogLevel=3;};
  ExternalBanner = {Enabled=NO;LogLevel=3;};
  ExternalCDR = {Enabled=NO;LogLevel=3;};
- ExternalFilters = ({Enabled=YES;LogLevel=5;Name=cgpav;ProgramName="/opt/CommuniGate/cgpav -f /etc/cgpav.conf";RestartPause=15s;Timeout=5m;},{Enabled=YES;LogLevel=5;Name=DKIM_verify;ProgramName="/opt/CommuniGate/helper_DKIM_verify.pl";RestartPause=15s;Timeout=5m;},{Enabled=YES;LogLevel=5;Name=DKIM_sign;ProgramName="/opt/CommuniGate/helper_DKIM_sign.pl";RestartPause=15s;Timeout=5m;});
+ ExternalFilters = ({Enabled=YES;LogLevel=5;Name=cgpav;ProgramName="/opt/CommuniGate/cgpav -f /etc/cgpav.conf";RestartPause=15s;Timeout=5m;});
  ExternalRADIUS = {Enabled=NO;LogLevel=3;};
  HTTPOutputCacheSize = 10;
  HTTPOutputLogLevel = 2;

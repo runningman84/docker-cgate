@@ -6,21 +6,5 @@
       ("Message Size", "greater than", 1024)
     ),
     ((ExternalFilter, cgpav))
-  ),
-  (
-    8,
-    DKIM_verify,
-    (("Header Field", is, "DKIM-Signature:*")),
-    ((ExternalFilter, DKIM_verify))
-  ),
-  (
-    7,
-    DKIM_sign,
-    (
-      (Source, in, "trusted,authenticated"),
-      ("Header Field", "is not", "DKIM-Signature:*")
-    ),
-    ((ExternalFilter, DKIM_sign))
   )
 )
-
