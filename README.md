@@ -5,7 +5,6 @@ CommuniGate
 [![](https://images.microbadger.com/badges/image/runningman84/cgate.svg)](https://hub.docker.com/r/runningman84/cgate "Click to view the image on Docker Hub")
 [![](https://img.shields.io/docker/stars/runningman84/cgate.svg)](https://hub.docker.com/r/runningman84/cgate "Click to view the image on Docker Hub")
 [![](https://img.shields.io/docker/pulls/runningman84/cgate.svg)](https://hub.docker.com/r/runningman84/cgate "Click to view the image on Docker Hub")
-[![Anchore Image Overview](https://anchore.io/service/badges/image/33d1c1f2abf0d2f7d6e56decfe4025064c78cbbe5ba634b3f6df9544071f1c5c)](https://anchore.io/image/dockerhub/runningman84%2Fcgate%3Alatest)
 
 Introduction
 ----
