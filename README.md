@@ -8,7 +8,7 @@ CommuniGate
 
 Introduction
 ----
-This docker image installs CommuniGate Pro using Ubuntu 18.04 base image.
+This docker image installs CommuniGate Pro using Ubuntu 20.04 base image.
 
 A documentation can be found here:
 [https://www.communigate.com/communigatepro/](https://www.communigate.com/communigatepro/)
