@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER Philipp Hellmich <phil@hellmi.de>
 
 ARG BUILD_DATE
@@ -25,7 +25,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # install dumb init
-RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb && \
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_amd64.deb && \
   dpkg -i dumb-init_*.deb && rm dumb-init_*.deb
 
 # add our user to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
@@ -46,7 +46,7 @@ RUN useradd -r cgatepro -d /var/CommuniGate -g mail \
 #&& rm /opt/CommuniGate/sendmail
 
 RUN cd /tmp \
-&& wget -q ftp://ftp.stalker.com/pub/CommuniGatePro/CGatePro-Linux_amd64.deb \
+&& wget -q http://www.communigate.world/pub/CommuniGatePro/CGatePro-Linux_amd64.deb \
 -O /tmp/CGatePro-Linux_amd64.deb \
 && dpkg -i /tmp/CGatePro-Linux_amd64.deb \
 && rm -fr /tmp/*
